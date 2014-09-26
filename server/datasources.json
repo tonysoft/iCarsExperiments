@@ -1,0 +1,53 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory",
+    "file": "testData.json"
+  },
+  "mongoTest": {
+    "url": "mongodb://tonystrong:tonystrong@kahana.mongohq.com:10008/tonystrong",
+    "name": "mongoTest",
+    "connector": "loopback-connector-mongodb",
+    "debug": true
+  },
+  "geo": {
+    "name": "geo",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://maps.googleapis.com/maps/api/geocode/{format=json}",
+          "headers": {
+            "accepts": "application/json",
+            "content-type": "application/json"
+          },
+          "query": {
+            "address": "{street},{city},{zipcode}",
+            "sensor": "{sensor=false}"
+          },
+          "responsePath": "$.results[0].geometry.location"
+        },
+        "functions": {
+          "geocodex": [
+            "street",
+            "city",
+            "zipcode"
+          ]
+        }
+      }
+    ]
+  },
+  "WeatherService": {
+    "name": "WeatherService",
+    "connector": "soap",
+    "remotingEnabled": true,
+    "wsdl": "http://wsf.cdyne.com/WeatherWS/Weather.asmx?WSDL"
+  },
+  "StockService": {
+    "name": "StockService",
+    "connector": "soap",
+    "remotingEnabled": true,
+    "wsdl": "http://www.webservicex.net/stockquote.asmx?WSDL"
+  }
+}

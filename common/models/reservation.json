@@ -1,0 +1,32 @@
+{
+  "name": "Reservation",
+  "plural": "reservations",
+  "base": "PersistedModel",
+  "options": {
+    "mysql": {
+      "table": "reservation"
+    },
+    "mongodb": {
+      "collection": "reservation"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "String",
+      "id": true,
+      "length": 20
+    },
+    "name": {
+      "type": "String"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "cars": {
+      "type": "hasAndBelongsToMany",
+      "model": "Car"
+    }
+  },
+  "acls": [],
+  "methods": []
+}
