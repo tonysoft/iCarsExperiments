@@ -8,7 +8,6 @@ module.exports = function(Reservation) {
   Reservation.setup = function() {
     console.log('Reservation Mixin TimeStamp');
     Reservation.mixin(TimeStamp);
-    console.log(Reservation.find);
   };
 
   Reservation.setup();
