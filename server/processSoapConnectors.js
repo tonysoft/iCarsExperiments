@@ -1,5 +1,6 @@
 var loopback = require('loopback');
 module.exports = function processSoapConnectors(server, next) {
+  console.log(process.env.noSOAP);
 
   var soapConnectors = [];
   var soapConnectorNames = [];
@@ -33,10 +34,12 @@ module.exports = function processSoapConnectors(server, next) {
           for (var j = 0; j < services.length; j++) {
             // Handle each service...
 
-            parameterizeSoapService(j, 'Soap');
-              // in its own scope...
-            parameterizeSoapService(j, 'Soap12');
-              // Let's do Soap12 for now...
+            if (process.env.noSOAP != 1) {
+              parameterizeSoapService(j, 'Soap');
+                // in its own scope...
+              parameterizeSoapService(j, 'Soap12');
+                // Let's do Soap12 for now...
+            }
 
             function parameterizeSoapService(j, serviceQualifier) {
               var serviceName = services[j];
@@ -58,8 +61,10 @@ module.exports = function processSoapConnectors(server, next) {
 
                 function creatParameterizedSoapRemoteMethod(soapMethod) {
                   var methodName = soapMethod;
+                  var bindingSuffix = '';
                   if (serviceQualifier !== 'Soap') {
                     methodName = serviceName + '_' + serviceName + serviceQualifier + '_' + soapMethod;
+                    bindingSuffix = '_' + serviceQualifier;
                   }
                   var method = connectorModel.sharedClass.find(methodName, true);
                     // find the corresponding method in the Loopback Model we attached to the Connector...
@@ -114,7 +119,7 @@ module.exports = function processSoapConnectors(server, next) {
                             // This is the Loopback Style Parameter List...
                           returns: {arg: 'result', type: 'object', root: true},
                             // TODO: Test for other Soap Return Types...
-                          http: {verb: 'get', path: '/' + '_' + methodName}
+                          http: {verb: 'get', path: '/' + '_' + soapMethod + bindingSuffix }
                         }
                       );
                     }
