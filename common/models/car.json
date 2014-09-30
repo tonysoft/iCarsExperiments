@@ -42,9 +42,11 @@
   },
   "validations": [],
   "relations": {
-    "reservations": {
-      "type": "hasAndBelongsToMany",
-      "model": "Reservation"
+    "customers": {
+      "type": "hasMany",
+      "model": "Customer",
+      "through": "Reservation",
+      "foreignKey": "carId"
     }
   },
   "acls": [],

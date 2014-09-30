@@ -15,18 +15,20 @@ app.use(loopback.compress());
 
 // boot scripts mount components like REST API
 boot(app, __dirname);
+	// We took explorer.js out of /boot and put it in /server root next to server.js
 
 
-
-// To ensure that SOAP Interfaces appear within Explorer, we took Explorer out of the /boot directory
-require('./explorer')(app, finishUp);
-// We then modified Explorer to detect all SOAP Connectors and wait for them to load.
-
-// The Explorer Load Module will callback to "finishUp" when its job is done.
+require('./processSoapConnectors')(app, finishUp);
+	// To ensure that SOAP Interfaces appear within Explorer, we took Explorer out of the /boot directory
+	// The Explorer will Load within "finishUp" below when its all custom Setup is done by processSoapConnectors above.
 
 
 // Defer all the rest of the Startup Work until Explorer is properly configured.
 function finishUp() {
+
+	require('./explorer')(app);
+		// This was formerly done within "boot" above...
+
 	// -- Mount static files here--
 	// All static middleware should be registered at the end, as all requests
 	// passing the static middleware are hitting the file system

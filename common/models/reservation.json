@@ -23,8 +23,14 @@
   "validations": [],
   "relations": {
     "cars": {
-      "type": "hasAndBelongsToMany",
-      "model": "Car"
+        "type": "belongsTo",
+        "model": "Car",
+        "foreignKey": "carId"
+    },
+    "customers": {
+        "type": "belongsTo",
+        "model": "Customer",
+        "foreignKey": "customerId"
     }
   },
   "acls": [
@@ -33,31 +39,11 @@
       "principalId": "$unauthenticated",
       "permission": "DENY",
       "accessType": "*"
-    },    {
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "DENY",
-      "accessType": "*"
     },
     {
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": "count",
-      "accessType": "*"
-    },
-    {
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "findById",
-      "accessType": "*"
-    },
-    {
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "find",
       "accessType": "*"
     }
   ],

@@ -38,20 +38,25 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "cars": {
+      "type": "hasMany",
+      "model": "Car",
+      "through": "Reservation",
+      "foreignKey": "customerId"
+    }
+  },
   "acls": [
     {
       "principalType": "ROLE",
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
-      "property": "exists",
       "accessType": "*"
     },
     {
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": "count",
       "accessType": "*"
     }
   ],
