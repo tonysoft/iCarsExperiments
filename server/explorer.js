@@ -33,14 +33,15 @@ module.exports = function mountLoopBackExplorer(server, next) {
           for (var j = 0; j < services.length; j++) {
             // Handle each service...
 
-            parameterizeSoapService(j);
+            parameterizeSoapService(j, 'Soap');
               // in its own scope...
+            parameterizeSoapService(j, 'Soap12');
+              // Let's not do Soap12 for now...
 
-            function parameterizeSoapService(j) {
+            function parameterizeSoapService(j, serviceQualifier) {
               var serviceName = services[j];
                 // This is the Service Name somethin like "Weather"...
-              var bindingName = serviceName + "Soap";
-                // Let's only handle the "Soap" binding now and leave the "Soap12" binding alone.
+              var bindingName = serviceName + serviceQualifier;
 
               var soapMethods = soapConnector.adapter.client.wsdl.definitions.bindings[bindingName].methods;
               for (var soapMethod in soapMethods) {
@@ -50,10 +51,15 @@ module.exports = function mountLoopBackExplorer(server, next) {
                   // in its own scope...
 
                 function creatParameterizedSoapRemoteMethod(soapMethod) {
-                  var method = connectorModel.sharedClass.find(soapMethod, true);
+                  var methodName = soapMethod;
+                  if (serviceQualifier !== 'Soap') {
+                    methodName = serviceName + '_' + serviceName + serviceQualifier + '_' + soapMethod;
+                  }
+                  var method = connectorModel.sharedClass.find(methodName, true);
                     // find the corresponding method in the Loopback Model we attached to the Connector...
 
                   if (method !== null) {
+                    console.log(method.name);
                     method = method.fn;
 
                     var params = soapConnector.adapter.client.wsdl.definitions.bindings[bindingName].methods[soapMethod].input.$lookupTypes;
@@ -78,7 +84,7 @@ module.exports = function mountLoopBackExplorer(server, next) {
                         // Right now we know "string" type parameters work, but others might fail.
 
                       // The Signature for the new Remote Methods will PREPEND an UNDERSCORE
-                      connectorModel['_' + soapMethod] = function () {
+                      connectorModel['_' + methodName] = function () {
                         var tempArguments = arguments;
                           // Cache the input arguments...
 
@@ -88,7 +94,7 @@ module.exports = function mountLoopBackExplorer(server, next) {
                         }
                           // Generate the Object to pass to the Standard, Unparameterized Method.
 
-                        connectorModel[soapMethod](inputObject, function (err, response) {
+                        connectorModel[methodName](inputObject, function (err, response) {
                           // Call the Standard Method...
 
                           tempArguments[tempArguments.length-1](err, response);
@@ -97,12 +103,12 @@ module.exports = function mountLoopBackExplorer(server, next) {
                       };
 
                       loopback.remoteMethod(
-                        connectorModel['_' + soapMethod], {
+                        connectorModel['_' + methodName], {
                           accepts: accepts,
                             // This is the Loopback Style Parameter List...
                           returns: {arg: 'result', type: 'object', root: true},
                             // TODO: Test for other Soap Return Types...
-                          http: {verb: 'get', path: '/' + '_' + soapMethod}
+                          http: {verb: 'get', path: '/' + '_' + methodName}
                         }
                       );
                     }
