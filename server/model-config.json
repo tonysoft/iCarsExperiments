@@ -17,10 +17,10 @@
     "dataSource": "db",
     "public": false
   },
-  "Role": {
-    "dataSource": "db",
-    "public": false
-  },
+    "Role": {
+        "dataSource": "db",
+        "public": true
+    },
   "Car": {
     "dataSource": "db"
   },
@@ -38,5 +38,8 @@
   },
   "Reservation": {
     "dataSource": "db"
+  },
+  "WeatherService": {
+    "dataSource": "WeatherService"
   }
 }

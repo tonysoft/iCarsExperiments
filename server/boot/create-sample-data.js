@@ -9,7 +9,8 @@ module.exports = function(app) {
   console.log(app.dataSources.db.name !== 'Memory');
   console.log(testData !== undefined);
   if ((app.dataSources.db.name !== 'Memory') || 
-      (testData !== undefined)) return;
+      (testData !== undefined))
+    return;
 
   console.error('Started the import of sample data.');
   app.importing = true;

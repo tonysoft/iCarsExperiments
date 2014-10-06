@@ -42,13 +42,26 @@
   },
   "validations": [],
   "relations": {
-    "customers": {
-      "type": "hasMany",
-      "model": "Customer",
-      "through": "Reservation",
-      "foreignKey": "carId"
-    }
   },
-  "acls": [],
+  "acls": [
+      {
+          "principalType": "ROLE",
+          "principalId": "$everyone",
+          "permission": "DENY",
+          "property": "findById"
+      },
+      {
+          "principalType": "ROLE",
+          "principalId": "$testRole",
+          "permission": "ALLOW",
+          "property": "findById"
+      },
+      {
+          "principalType": "ROLE",
+          "principalId": "mathlete",
+          "permission": "ALLOW",
+          "property": "findById"
+      }
+  ],
   "methods": []
 }

@@ -19,15 +19,13 @@ boot(app, __dirname);
 
 
 require('./processSoapConnectors')(app, finishUp);
-	// To ensure that SOAP Interfaces appear within Explorer, we took Explorer out of the /boot directory
-	// The Explorer will Load within "finishUp" below when its all custom Setup is done by processSoapConnectors above.
 
-
-// Defer all the rest of the Startup Work until Explorer is properly configured.
+// Defer all the rest of the Startup Work until Explorer 
+// has all the Model Info it needs from any Async or Programmatic Setup.
 function finishUp() {
 
 	require('./explorer')(app);
-		// This was formerly done within "boot" above...
+		// Explorer was previously "wired in" within "boot" above...
 
 	// -- Mount static files here--
 	// All static middleware should be registered at the end, as all requests

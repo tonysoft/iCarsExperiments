@@ -22,16 +22,6 @@
   },
   "validations": [],
   "relations": {
-    "cars": {
-        "type": "belongsTo",
-        "model": "Car",
-        "foreignKey": "carId"
-    },
-    "customers": {
-        "type": "belongsTo",
-        "model": "Customer",
-        "foreignKey": "customerId"
-    }
   },
   "acls": [
     {

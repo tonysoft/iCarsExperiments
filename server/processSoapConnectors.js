@@ -29,7 +29,10 @@ module.exports = function processSoapConnectors(server, next) {
         var soapConnector = soapConnectors[i];
         soapConnector.once('connected', function () {
           // Once it's loaded...
-          var connectorModel = soapConnector.createModel(soapConnectorNames[i], {});
+          var connectorModel = null;
+          if (process.env.noSOAP != 1) {
+            connectorModel = soapConnector.createModel(soapConnectorNames[i], {});
+          }
           var services = Object.keys(soapConnector.adapter.client.wsdl.services);
           for (var j = 0; j < services.length; j++) {
             // Handle each service...
@@ -70,13 +73,14 @@ module.exports = function processSoapConnectors(server, next) {
                     // find the corresponding method in the Loopback Model we attached to the Connector...
 
                   if (method !== null) {
-                    console.log(method.name);
+                    console.log(bindingName + '.' + method.name);
                     method = method.fn;
 
                     var params = soapConnector.adapter.client.wsdl.definitions.bindings[bindingName].methods[soapMethod].input.$lookupTypes;
-                    if (params.length > 0) {
+                    if ((params !== undefined) && (params.length > 0)) {
                       // if we found input parameters...
-
+                      // connectorModel.disableRemoteMethod(methodName);
+                      // console.log(methodName + ":" + method.shared)
                       method.shared = false;
                         // Hide the standard Method generated in the Model...
 
@@ -128,7 +132,9 @@ module.exports = function processSoapConnectors(server, next) {
               }
             }
           }
-          server.model(connectorModel);
+          if (connectorModel !== null) {
+              server.model(connectorModel);
+          }
           // Let's associate a Model and expose it so it'll appear in Explorer
 
           console.log("SOAP Connector loaded: " + soapConnectorNames[i]);
@@ -146,7 +152,6 @@ module.exports = function processSoapConnectors(server, next) {
   }
 
   function finishUp() {
-    // Do any other work here...  Nothing yet...
     next();
       // This will return to finish up the App Setup...
   }

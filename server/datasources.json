@@ -49,5 +49,13 @@
     "connector": "soap",
     "remotingEnabled": true,
     "wsdl": "http://www.webservicex.net/stockquote.asmx?WSDL"
+  },
+  "domainStatus": {
+    "name": "domainStatus",
+    "connector": "soap",
+    "remotingEnabled": true,
+    "wsdl": "http://localhost/wsdl/domains-status.wsdl"
   }
+
+
 }

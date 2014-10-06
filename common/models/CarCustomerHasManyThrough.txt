@@ -1,0 +1,31 @@
+"relations": {
+    "customers": {
+      "type": "hasMany",
+      "model": "Customer",
+      "through": "Reservation",
+      "foreignKey": "carId"
+    }
+  }
+},
+
+"relations": {
+    "cars": {
+      "type": "hasMany",
+      "model": "Car",
+      "through": "Reservation",
+      "foreignKey": "customerId"
+    }
+},
+
+"relations": {
+    "cars": {
+        "type": "belongsTo",
+        "model": "Car",
+        "foreignKey": "carId"
+    },
+    "customers": {
+        "type": "belongsTo",
+        "model": "Customer",
+        "foreignKey": "customerId"
+    }
+},
