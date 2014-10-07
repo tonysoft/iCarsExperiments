@@ -48,7 +48,12 @@
     "name": "StockService",
     "connector": "soap",
     "remotingEnabled": true,
-    "wsdl": "http://www.webservicex.net/stockquote.asmx?WSDL"
+    "wsdl": "http://www.webservicex.net/stockquote.asmx?WSDL",
+    "soapHeaders": [{
+      "element": {"myHeader": "XYZ"},
+      "prefix": "p1",
+      "namespace": "http://ns1"
+    }]
   },
   "domainStatus": {
     "name": "domainStatus",

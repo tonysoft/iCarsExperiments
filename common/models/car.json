@@ -54,11 +54,11 @@
           "principalType": "ROLE",
           "principalId": "$testRole",
           "permission": "ALLOW",
-          "property": "findById"
+          "property": "find"
       },
       {
           "principalType": "ROLE",
-          "principalId": "mathlete",
+          "principalId": "Athlete",
           "permission": "ALLOW",
           "property": "findById"
       }

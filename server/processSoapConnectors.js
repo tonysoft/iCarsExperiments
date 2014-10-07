@@ -107,6 +107,7 @@ module.exports = function processSoapConnectors(server, next) {
                         for (var ip = 0; ip < accepts.length; ip++) {
                           inputObject[accepts[ip].arg] = tempArguments[ip];
                         }
+                          inputObject.soapHeaders = { test1: "1", test2: "2"};
                           // Generate the Object to pass to the Standard, Unparameterized Method.
 
                         connectorModel[methodName](inputObject, function (err, response) {
